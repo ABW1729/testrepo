@@ -3,14 +3,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { buttonVariants } from './ui/button';
 import {Button } from './ui/button';
-import { UserButton, auth } from '@clerk/nextjs';
+import { UserButton, auth,SignOutButton,SignedIn,SignedOut } from '@clerk/nextjs';
 import { useAuth } from "@clerk/nextjs";
-import { getAuth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { getAuth, clerkClient, currentUser} from "@clerk/nextjs/server";
 import { useUser } from "@clerk/nextjs";
-
+import { useClerk } from "@clerk/clerk-react";
+import { redirect, useRouter } from 'next/navigation'
 
 export default  function  Navbar () {
   const user=useUser();
+  const { signOut } = useClerk();
+  const router = useRouter()
   const { isLoaded, userId, sessionId, getToken } = useAuth();
 // console.log(user);
 return (
@@ -21,29 +24,12 @@ return (
 Home
        
 </Link>
-           {!userId && (
-          <>
-            <Link
-              href='sign-in'
-              className='text-black mr-4'
-            >
-              Sign In
-            </Link>
-            <Link
-              href='sign-up'
-              className='text-black mr-4'
-            >
-              Sign Up
-            </Link>
-          </>
-        )}
-        {userId && (
-          <Link href='profile' className='text-black mr-4'>
-           
-           My Profile
-            <UserButton afterSignOutUrl='/' />
-          </Link>
-        )}
+
+     
+             <button onClick={() => signOut(() => redirect("/"))}>
+             Sign out
+           </button>
+     
         
 
         </div>
