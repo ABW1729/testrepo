@@ -13,19 +13,19 @@ import './global.css'
 import { NextApiRequest } from 'next';
 import { auth, clerkClient } from "@clerk/nextjs/server";
 // import React, { useState, useEffect } from 'react';
-  const Header = () => (
+  const Header = ({user}:any) => (
     <div>
       {/*<!-- Header -->*/}
-      <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{ backgroundImage: 'url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top' }}>
+      <div>
+      {/* <div className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style={{ backgroundImage: 'url(https://raw.githubusercontent.com/creativetimofficial/argon-dashboard/gh-pages/assets-old/img/theme/profile-cover.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top' }}> */}
         {/*<!-- Mask -->*/}
         <span className="mask bg-gradient-default opacity-8"></span>
         {/*<!-- Header container -->*/}
         <div className="container-fluid d-flex align-items-center">
           <div className="row">
             <div className="col-lg-7 col-md-10">
-              <h1 className="display-2 text-white">Hello Jesse</h1>
-              <p className="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-              <a href="#!" className="btn btn-info">Edit profile</a>
+              <h1 className="display-2 text-white">Hello {user ?  user.fullName : "User"}</h1>
+              <p className="text-white mt-0 mb-5">This is your profile page. You can complete your profile and see registered events.</p>
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
               <div className="col-lg-3 order-lg-2">
                 <div className="card-profile-image">
                   <a href="#">
-                  <Image alt="." src={'/images/def.jpg'} className="rounded-circle" width={150} height={150}/>
+                  <Image alt="." src={user ? user.imageUrl : "/images/def.png"} className="rounded-circle" width={150} height={150}/>
                   </a>
                 </div>
               </div>
@@ -66,7 +66,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
               </div>
               <div className="text-center">
                 <h3>
-                 {user && user.fullName}<span className="font-weight-light">, 27</span>
+                 {user && user.fullName}<span className="font-weight-light"></span>
                 </h3>
                 {/* <div className="h5 font-weight-300">
                   <i className="ni location_pin mr-2"></i>
@@ -78,7 +78,6 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                   <i className="ni education_hat mr-2"></i>
                 </div>
                 <hr className="my-4"/>
-                <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
                
               </div>
             </div>
@@ -92,8 +91,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                   <h3 className="mb-0">My account</h3>
                 </div>
                 <div className="col-4 text-right">
-                  {/* <a href="#!" className="btn btn-sm btn-primary">Settings</a> */}
-                  {/* <Editpbut/> */}
+                  <Editpbut/>
                 </div>
               </div>
             </div>
@@ -103,10 +101,10 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                 <div className="pl-lg-4">
                   <div className="row">
                     <div className="col-lg-6">
-                      {/* <div className="form-group focused">
-                        <label className="form-control-label" htmlFor="input-username">Username</label>
-                        <input type="text" id="input-username" className="form-control form-control-alternative" placeholder="Username" value="lucky.jesse"/>
-                      </div> */}
+                      <div className="form-group focused">
+                        <label className="form-control-label" htmlFor="input-username">Phone</label>
+                        <input type="text" id="input-username" className="form-control form-control-alternative" placeholder="Phone" />
+                      </div>
                     </div>
                     <div className="col-lg-6">
                       <div className="form-group">
@@ -138,7 +136,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                     <div className="col-md-12">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-address">Address</label>
-                        <input id="input-address" className="form-control form-control-alternative" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text"/>
+                        <input id="input-address" className="form-control form-control-alternative" placeholder=" Address" value="" type="text"/>
                       </div>
                     </div>
                   </div>
@@ -146,30 +144,28 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                     <div className="col-lg-4">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-city">City</label>
-                        <input type="text" id="input-city" className="form-control form-control-alternative" placeholder="City" value="New York"/>
+                        <input type="text" id="input-city" className="form-control form-control-alternative" placeholder="City" value=""/>
                       </div>
                     </div>
                     <div className="col-lg-4">
                       <div className="form-group focused">
-                        <label className="form-control-label" htmlFor="input-country">Country</label>
-                        <input type="text" id="input-country" className="form-control form-control-alternative" placeholder="Country" value="United States"/>
+                        <label className="form-control-label" htmlFor="input-country">State</label>
+                        <input type="text" id="input-country" className="form-control form-control-alternative" placeholder="State" value=""/>
                       </div>
                     </div>
                     <div className="col-lg-4">
                       <div className="form-group">
-                        <label className="form-control-label" htmlFor="input-country">Postal code</label>
-                        <input type="number" id="input-postal-code" className="form-control form-control-alternative" placeholder="Postal code"/>
+                        <label className="form-control-label" htmlFor="input-country">Year of study</label>
+                        <input type="number" id="input-postal-code" className="form-control form-control-alternative" placeholder="Year of Study"/>
                       </div>
                     </div>
                   </div>
                 </div>
                 <hr className="my-4"/>
                
-                <h6 className="heading-small text-muted mb-4">About me</h6>
+                <h6 className="heading-small text-muted mb-4">Registered Events</h6>
                 <div className="pl-lg-4">
                   <div className="form-group focused">
-                    <label>About Me</label>
-                    <textarea rows={4} className="form-control form-control-alternative" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
                   </div>
                 </div>
               </form>
@@ -193,7 +189,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
       const sessionId = getCookie("__session");
  
       const user=useUser().user;
-      // console.log(user);
+      console.log(user);
   
    
         // const data = () => {
@@ -224,7 +220,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
         <div className="main-content">
           <Navbar />
   
-          <Header />
+          <Header  user={user}/>
   
           <PageContent  user={user}/>
         </div>
