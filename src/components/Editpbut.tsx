@@ -38,6 +38,8 @@ const Editpbut = () => {
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
     return (
+      <div > 
+
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline"className="btn btn-sm btn-primary">Edit Profile</Button>
@@ -53,22 +55,56 @@ const Editpbut = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="name" className="text-right">
-                  Name
+                 First Name
                 </Label>
-                <Input id="name" value="Pedro Duarte" className="col-span-3" />
+                <Input id="firstname" className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="username" className="text-right">
-                  Username
+                 Last Name
                 </Label>
-                <Input id="username" value="@peduarte" className="col-span-3" />
+                <Input id="lastname" className="col-span-3" />
               </div>
             </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Phone
+                </Label>
+                <Input id="phone" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                 Email
+                </Label>
+                <Input id="email"  className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Your Address
+                </Label>
+                <Input id="address" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                 State
+                </Label>
+                <Input id="state" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                 Year of Study
+                </Label>
+                <Input id="yos"  className="col-span-3" />
+              </div>
+            
+            
             <DialogFooter>
               <Button type="submit">Save changes</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+
       )
 }
 
