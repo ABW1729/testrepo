@@ -12,9 +12,14 @@ import { UserButton, auth } from '@clerk/nextjs';
 import { useAuth } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import Link from 'next/link';
+import { useClerk } from "@clerk/clerk-react";
+import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
 export default function index() {
   // const header = useRef(null);
+  const { signOut } = useClerk();
+  const router = useRouter()
   const [isActive, setIsActive] = useState(false);
   const pathname = usePathname();
   const button = useRef(null);
@@ -143,8 +148,40 @@ export default function index() {
 
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-4">
+             
                 <div className="hidden sm:flex">
-                  <Magnetic>
+                  {userId ?
+                  (<><Magnetic>
+                    <a
+                      className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
+                      href="/profile"
+                    >
+                      <span className="absolute -end-full transition-all group-hover:end-4">
+                        <svg
+                          className="h-5 w-5 rtl:rotate-180"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
+                        </svg>
+                      </span>
+
+                      <span className="text-sm font-semibold transition-all group-hover:me-4">
+                        {" "}
+                        Dashboard{" "}
+                         </span>
+                    </a>
+                  </Magnetic>
+                  <button onClick={() => signOut(() => redirect("/"))}>
+             Sign out
+           </button></>) : (<Magnetic>
                     <a
                       className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
                       href="/sign-in"
@@ -169,19 +206,11 @@ export default function index() {
                       <span className="text-sm font-semibold transition-all group-hover:me-4">
                         {" "}
                         Login{" "}
-                     
-                      </span>
+                         </span>
                     </a>
-                  </Magnetic>
+                  </Magnetic>)}
                 </div>
-                <div>
-                {userId && (
-          <Link href='profile' className='text-black mr-4'>
-           
-           My Profile
-            <UserButton afterSignOutUrl='/' />
-          </Link>)}
-          </div>
+            
               </div>
 
               <div className="block md:hidden">
