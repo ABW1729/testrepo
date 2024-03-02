@@ -4,7 +4,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-function EditProfiles(props) {
+function CompleteProfiles(props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setlastName] = useState('');
   const [number, setNumber] = useState('');
@@ -158,4 +158,4 @@ const handleSubmit = async (e:any) => {
   );
 }
 
-export default  EditProfiles;
+export default  CompleteProfiles;

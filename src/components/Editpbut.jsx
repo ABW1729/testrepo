@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
 import "./D.css"
-import CompleteProfiles from './Editform';
+import EditProfiles from './Editform';
 
 // import React from 'react'
 
@@ -81,7 +81,7 @@ const renderForm = () => {
 
       <div className="flex flex-row justify-between">
 
-      <CustomButton onClick={openForm} buttonText="Edit Profile" form={<CompleteProfiles Email={email} />}/>
+      <CustomButton onClick={openForm} buttonText="Edit Profile" form={<EditProfiles email={email} />}/>
     </div>
  </div>
  </>
