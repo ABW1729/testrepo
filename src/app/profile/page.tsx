@@ -38,8 +38,11 @@ import React, { useState, useEffect } from 'react';
   const PageContent = (props:any) => {
 
 
-    const  {user,check,email}=props;
-  console.log(email);
+    const  {user,check,email,events,loading}=props;
+    
+    if (loading) {
+      return <div>Loading...</div>;
+    }
     
     return (<div>
       <div className="container-fluid mt--7">
@@ -171,9 +174,21 @@ import React, { useState, useEffect } from 'react';
                 <hr className="my-4"/>
                
                 <h6 className="heading-small text-muted mb-4">Registered Events</h6>
+
                 <div className="pl-lg-4">
                   <div className="form-group focused">
-                  </div>
+                 
+        {events && events.length > 0 ? (
+            <ul>
+                {events.map((event: string, index: number) => (
+                    <li key={index}>{event}</li>
+                ))}
+            </ul>
+        ) : (
+            <div><p>No registered events</p></div>
+        )}
+    </div>
+
                 </div>
               </form>
             </div>
@@ -211,7 +226,8 @@ import React, { useState, useEffect } from 'react';
       
       const [completeProfile, isProfileComplete] = useState(0);
       const [dbUser,setData]=useState({});
-     
+     const [events,setEvents]=useState([]);
+     const [loading, setLoading] = useState(true)
       useEffect(() => {
         const checkProfile = async () => {
           try {
@@ -233,18 +249,55 @@ import React, { useState, useEffect } from 'react';
             }
           } catch (error) {
             console.log("Error ", error);
+           }finally {
+            setLoading(false); // Set loading to false when API call completes
           }
         };
       
         checkProfile(); 
       }, []);
   
+    const Email=user && user.emailAddresses[0].emailAddress;
+
     
-    
-   if (!user && completeProfile!==0) {
+   if (!user && completeProfile!==0 && !Email) {
         return <div>Loading...</div>;
       }
-      console.log(user?.emailAddresses[0].emailAddress);
+
+      useEffect(() => {
+        const getEvents = async () => {
+          try {
+            // Only proceed if Email is available
+            if (Email) {
+              const res = await fetch("/api/getRegistrations", {
+                method: "GET",
+                headers: {
+                  'email': Email,
+                },
+              });
+      
+              if (res.status === 200) {
+                const data = await res.json();
+                setEvents(data.events);
+              } else {
+                setEvents([]);
+              }
+            }
+          } catch (error) {
+            console.log("Error ", error);
+          } finally {
+            setLoading(false); // Set loading to false when API call completes
+          }
+        };
+      
+        // Fetch events only if Email is available
+        if (Email) {
+          getEvents();
+        }
+      }, [Email])
+  
+    
+
    return ( 
    <>
       <div>
@@ -255,7 +308,7 @@ import React, { useState, useEffect } from 'react';
          
            <Navbar />
              <Header  user={user}/>
-         <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} />
+         <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} events={events} loading={loading}/>
         
         </div>
       </div>

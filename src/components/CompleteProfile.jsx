@@ -27,7 +27,6 @@ const CompleteProfile = (props) => {
 const [showForm, setShowForm] = useState(false);
 const [selectedForm, setSelectedForm] = useState(null);
 const {email}=props;
-console.log(email);
 const openForm = (form) => {
   setSelectedForm(form);
   setShowForm(true);

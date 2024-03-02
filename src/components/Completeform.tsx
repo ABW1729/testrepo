@@ -14,7 +14,6 @@ function CompleteProfiles(props) {
   const [loading, setLoading] = useState(false);
 
   const {email}=props;
- console.log(email);
 
 
 
@@ -58,7 +57,6 @@ const handleSubmit = async (e:any) => {
     ...formData,
     email: email // Assuming 'email' is the variable holding the email value
   };
-  console.log(data);
   try {
     // Send form data to the server or perform any necessary actions
     const response = await fetch('/api/submitProfile', {
