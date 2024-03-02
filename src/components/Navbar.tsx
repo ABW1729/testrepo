@@ -1,4 +1,3 @@
-"use client";
 import Link from 'next/link';
 import Image from 'next/image';
 import { buttonVariants } from './ui/button';
@@ -26,7 +25,7 @@ Home
 </Link>
 
      
-             <button onClick={() => signOut(() => redirect("/"))}>
+             <button onClick={() => signOut(() =>router.push("/"))}>
              Sign out
            </button>
      

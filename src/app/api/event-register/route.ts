@@ -19,9 +19,8 @@ export async function POST(req:Request) {
     address: string;
     yearOfStudying: string;
   }
-  console.log(765765765);
   try {
-    const {name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying }= await req.json();
+    const {name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying,eventname }= await req.json();
     // const newData = new Events(req.json());
    const client=new MongoClient(process.env.MONGODB_URI ?? '');
    await client.connect();
@@ -29,8 +28,12 @@ export async function POST(req:Request) {
    const eventId = headersList.get('event-id');
    const db=client.db("events");
    const objectId = new ObjectId(eventId?? '');
+    const userdb=client.db("users");
 
-
+    const user= await userdb.collection("users").findOne({ email:email });
+   if(!user){
+    return NextResponse.json({message:"First sign-in"},{status:401});
+   }
    const event = await db.collection("events").findOne({ _id: objectId });
     if (event && event.userIds.some((user:User) => user.email === email)) {
       return NextResponse.json({ message: "User already registered for this event" }, { status: 400 });
@@ -39,6 +42,8 @@ export async function POST(req:Request) {
 
  const userinfo={name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying };
    await db.collection("events").findOneAndUpdate({_id:objectId},{$push:{userIds:userinfo} as any});
+   await userdb.collection("users").findOneAndUpdate({email:email},{$push:{events:eventname} as any});
+
 
     return NextResponse.json({ message: "Registration Added." }, { status: 201 });
   } catch (error) {

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import "./D.css";
 import { useEffect} from 'react';
+import Header from "../../components/Header"
 
 import Form from "../RegiForms/Form"
 
@@ -79,9 +80,9 @@ const Home = () => {
 
     fetchEvents();
   }, []);
-console.log(events.events);
+
   const Events= events && events.events;
-  console.log(Events);
+
 
 
 
@@ -149,6 +150,7 @@ const AR=Events && Events.filter(event=>
 
   return (
     <>
+  <Header/>
       <div className="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-lg relative">
         {showForm && (
           <div className="fixed top-0 left-0 pt-20 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-95 z-50 overflow-y-auto">

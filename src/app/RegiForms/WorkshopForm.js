@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { sendMail } from "../../service/mailservice";
 
 
-function Form({eventname,participantcount,category,id}) {
+function WorkshopForm({eventname,participantcount,category,id}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
@@ -83,8 +83,7 @@ function Form({eventname,participantcount,category,id}) {
     if (participants.length < participantcount) {
       setParticipants([...participants, '']);
     } else {
-      alert(`You can add a maximum of ${participantCount} participants.`);
-
+      alert('You can add a maximum of 3 participants.');
     }
   };
 
@@ -128,13 +127,10 @@ function Form({eventname,participantcount,category,id}) {
         </motion.h2>
 
         <ToastContainer />
-        {participantcount!=0 ? (     <div className="mb-4">
-          <label htmlFor="name" className="block text-white">Team Leader Name:</label>
-          <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>):   (<div className="mb-4">
+        <div className="mb-4">
           <label htmlFor="name" className="block text-white"> Name:</label>
           <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>)}
+        </div>
         <div className="mb-4">
           <label htmlFor="email" className="block text-white">Email:</label>
           <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
@@ -143,10 +139,10 @@ function Form({eventname,participantcount,category,id}) {
           <label htmlFor="number" className="block text-white">Phone Number:</label>
           <input type="number" id="number" value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-       {participantcount!=0 && (<div className="mb-4">
+        {/* <div className="mb-4">
           <label htmlFor="teamName" className="block text-white">Team Name:</label>
           <input type="text" id="teamName" value={teamName} onChange={(e) => setTeamName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>) }
+        </div> */}
         <div className="mb-4">
           <label htmlFor="collegeName" className="block text-white">College Name:</label>
           <input type="text" id="collegeName" value={collegeName} onChange={(e) => setCollegeName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
@@ -171,35 +167,7 @@ function Form({eventname,participantcount,category,id}) {
           <label htmlFor="yearOfStudying" className="block text-white">Year of Studying:</label>
           <input type="text" id="yearOfStudying" value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-        {participantcount!=0 && (<>
-          <div className="mb-4">
-          <button type="button" onClick={handleAddParticipant} className="px-4 border-2 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 w-full">Add Participant</button>
-        </div>
-        {participants.map((participant, index) => (
-          <div key={index} className="mb-4">
-            <label htmlFor={`participant-${index}`} className="block text-white">Participant {index + 1}:</label>
-            <div className="flex items-center">
-              <input
-                type="text"
-                id={`participant-${index}`}
-                value={participant}
-                onChange={(e) => handleParticipantChange(index, e.target.value)}
-                className="mt-1 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="button"
-                onClick={() => handleDeleteParticipant(index)}
-                className="ml-2 border px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Delete
-              </motion.button>
-            </div>
-          </div>
-        ))}
-        </>)}
-      
+        
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -216,4 +184,4 @@ function Form({eventname,participantcount,category,id}) {
   );
 }
 
-export default  Form;
+export default  WorkshopForm;

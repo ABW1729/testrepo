@@ -3,11 +3,10 @@ import { type NextRequest } from "next/server";
 import { NextResponse } from 'next/server';
 export async function POST(req:Request) {
   try {
+    const {subject,email,text}=await req.json();
 
        await sendMail(
-          "TEST",
-          "bt21civ017@students.vnit.ac.in",
-          "AXIS NOT OP"
+        subject,email,text
 
               );
        return NextResponse.json( { message:"SUCCESS" },{status:200})

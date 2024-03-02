@@ -1,5 +1,4 @@
 "use client"
-import React from 'react';
 
 import Image from 'next/image';
 import { useUser } from "@clerk/nextjs";
@@ -7,13 +6,15 @@ import redirect from "next/navigation";
 import styles from './profilepage.module.css';
 import Navbar from "../../components/Navbar"
 import Editpbut from "../../components/Editpbut"
+import CompleteProfile from "../../components/CompleteProfile"
 import { getCookie  } from 'cookies-next'
 import { boolean } from 'zod';
 import './global.css'
 import { NextApiRequest } from 'next';
 import { auth, clerkClient } from "@clerk/nextjs/server";
-// import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
   const Header = ({user}:any) => (
+   
     <div>
       {/*<!-- Header -->*/}
       <div>
@@ -35,7 +36,10 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 
   
   const PageContent = (props:any) => {
-    const  {user}=props;
+
+
+    const  {user,check,email}=props;
+  console.log(email);
     
     return (<div>
       <div className="container-fluid mt--7">
@@ -91,7 +95,8 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                   <h3 className="mb-0">My account</h3>
                 </div>
                 <div className="col-4 text-right">
-                  <Editpbut/>
+                 {email && (check==1 ?  <Editpbut email={email}/>: <CompleteProfile email={email}/>)}
+                
                 </div>
               </div>
             </div>
@@ -109,7 +114,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                     <div className="col-lg-6">
                       <div className="form-group">
                         <label className="form-control-label" htmlFor="input-email">Email address</label>
-                        <input type="email" id="input-email" className="form-control form-control-alternative" value={user && user.emailAddresses}/>
+                        <input type="email" id="input-email" className="form-control form-control-alternative" value={user && user.emailAddresses }/>
                       </div>
                     </div>
                   </div>
@@ -117,13 +122,15 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
                     <div className="col-lg-6">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" className="form-control form-control-alternative" placeholder="First name" value={user && user.firstName}/>
+                        <input type="text" id="input-first-name" className="form-control form-control-alternative" placeholder="First name"value={user && user.firstName ? user.firstName : ''}
+/>
                       </div>
                     </div>
                     <div className="col-lg-6">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" className="form-control form-control-alternative" placeholder="Last name" value={user && user.lastName}/>
+                        <input type="text" id="input-last-name" className="form-control form-control-alternative" placeholder="Last name"value={user && user.lastName ? user.lastName : ''}
+/>
                       </div>
                     </div>
                   </div>
@@ -189,40 +196,67 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
       const sessionId = getCookie("__session");
  
       const user=useUser().user;
-      console.log(user);
   
-   
-        // const data = () => {
-        //   fetch('http://localhost:3000/api/getProfile', {
-        //     method: 'GET',
-        //     // headers: {
-        //     //   'Authorization': `Bearer ${token}`,
-        //     //   'Content-Type': 'application/json',
-        //     // },
-        //   })
-        //     .then((response) => {
-        //       if (!response.ok) {
-        //         throw new Error(`HTTP error! Status: ${response.status}`);
-        //       }
-        //       return response.json();
-        //     })
-        //     .catch((error) => {
-        //       console.error('Error fetching data:', error);
-        //     });
-        // };
-    
+      interface MyObject {
+        [key: string]: any; 
+      }
+      const isDataComplete = <T extends Record<string, any>>(obj: T): boolean => {
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key) && (!obj[key] && obj[key] !== 0)) {
+            return false;
+          }
+        }
+        return true;
+      };
       
+      const [completeProfile, isProfileComplete] = useState(0);
+      const [dbUser,setData]=useState({});
+     
+      useEffect(() => {
+        const checkProfile = async () => {
+          try {
+            const res = await fetch("/api/getProfile", {
+              method: "GET",
+            });
+      
+            if (res.status === 201) {
+              isProfileComplete(1);
+            } else if (res.status === 200) {
+              const data = await res.json(); 
+              const User = data.user;
+              setData(User);
+              if (isDataComplete(User)) {
+                isProfileComplete(1);
+              } else {
+                isProfileComplete(2);
+              }
+            }
+          } catch (error) {
+            console.log("Error ", error);
+          }
+        };
+      
+        checkProfile(); 
+      }, []);
   
-  
+    
+    
+   if (!user && completeProfile!==0) {
+        return <div>Loading...</div>;
+      }
+      console.log(user?.emailAddresses[0].emailAddress);
    return ( 
    <>
       <div>
         <div className="main-content">
-          <Navbar />
+         
   
-          <Header  user={user}/>
-  
-          <PageContent  user={user}/>
+         
+         
+           <Navbar />
+             <Header  user={user}/>
+         <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} />
+        
         </div>
       </div>
     </>)

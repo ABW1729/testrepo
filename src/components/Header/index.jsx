@@ -179,7 +179,7 @@ export default function index() {
                          </span>
                     </a>
                   </Magnetic>
-                  <button onClick={() => signOut(() => redirect("/"))}>
+                  <button onClick={() => signOut(() =>router.push("/"))}>
              Sign out
            </button></>) : (<Magnetic>
                     <a

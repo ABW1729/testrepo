@@ -31,11 +31,12 @@ const client=new MongoClient(process.env.MONGODB_URI ?? ' '
  const User = await db.collection('users').findOne({ email:Email });
 
  if (!User) {
-       await db.collection("users").insertOne({email:Email,firstName:fn,lastName:ln});
+       await db.collection("users").insertOne({email:Email,firstName:fn,lastName:ln,phone:"", address:"", state:"", yearOfStudy:"" ,events:[]});
+       return NextResponse.json({status:201});
 }
  
 return NextResponse.json({
-        "user" :User
+        user :User
     }, {
     status: 200,
     });

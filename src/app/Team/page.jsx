@@ -1,17 +1,13 @@
 "use client";
 // import Image from "next/image";
 // import styles from "./T.module.css";
+import Header from "../../components/Header"
 
 export default function index() {
   return (
-  
-      // <div className={styles.backgroundContainer}>
-      //   <Image
-      //     src="/images/bg1.jpeg"
-      //     alt="Your Image Alt Text"
-      //     layout="fill"
-      //     objectFit="cover"
-      //   />
+    <>
+     <Header/>
+    
       
          <div>
       <div className=" bg-transparent px-4 py-16 mx-auto  md:px-24 lg:px-8 lg:py-20">
@@ -1465,7 +1461,7 @@ export default function index() {
         </div>
       </div>
     </div>
-      
+      </>
      
   );
 }

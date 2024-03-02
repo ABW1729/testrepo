@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import "./W.css";
-// import RegistrationForm from "../RegiForms";
+import WorkshopForm from "../RegiForms/WorkshopForm";
 import { useEffect} from 'react';
+import Header from "../../components/Header"
 
 const PostCard = ({ title, date, imageSrc, description }) => {
   const [showForm, setShowForm] = useState(false);
@@ -16,35 +17,7 @@ const PostCard = ({ title, date, imageSrc, description }) => {
     setShowForm(false);
     document.body.style.overflow = 'auto'; // Enable scrolling on background
   };
-  const [events, setEvents] = useState({});
-
-  useEffect(() => {
-    async function fetchEvents() {
-      try {
-        const response = await fetch('/api/getEvents', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'event-type':2
-          },
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch events');
-        }
-        
-        const eventsData = await response.json();
-        setEvents(eventsData);
-      } catch (error) {
-        console.log('Error fetching events:', error);
-      }
-    }
-
-    fetchEvents();
-  }, []);
-
-  const Events= events && events.events;
-  console.log(Events);
+ 
 
   return (
     <div className="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-lg relative">
@@ -70,7 +43,7 @@ const PostCard = ({ title, date, imageSrc, description }) => {
                 ></path>
               </svg>
             </button>
-            <RegistrationForm />
+            <WorkshopForm />
           </div>
         </div>
       )}
@@ -115,29 +88,51 @@ const PostCard = ({ title, date, imageSrc, description }) => {
 };
 
 export default function Index() {
+  const [events, setEvents] = useState({});
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const response = await fetch('/api/getEvents', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'event-type':2
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        
+        const eventsData = await response.json();
+        setEvents(eventsData);
+      } catch (error) {
+        console.log('Error fetching events:', error);
+      }
+    }
+
+    fetchEvents();
+  }, []);
+
+  const Events= events && events.events;
+  console.log(Events);
   return (
+    <>
+    <Header/>
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
-        <PostCard
-          title="Visit the East"
-          date="28 Dec 2020"
-          imageSrc="https://images.pexels.com/photos/2408666/pexels-photo-2408666.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500"
-          description="Sed ut perspiciatis unde omnis iste natus error sit..."
-        />
-        <PostCard
-          title="Visit the East"
-          date="28 Dec 2020"
-          imageSrc="https://images.pexels.com/photos/2408666/pexels-photo-2408666.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500"
-          description="Sed ut perspiciatis unde omnis iste natus error sit..."
-        />
-        <PostCard
-          title="Visit the East"
-          date="28 Dec 2020"
-          imageSrc="https://images.pexels.com/photos/2408666/pexels-photo-2408666.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500"
-          description="Sed ut perspiciatis unde omnis iste natus error sit..."
-        />
-        {/* Repeat for other cards */}
+      {Events && Events.map((event, index) => (
+          <PostCard
+            key={index}
+            title={event.evename}
+            date={event.date}
+            imageSrc={event.img1}
+            description={event.desc}
+          />
+        ))}
       </div>
     </div>
+    </>
   );
 }

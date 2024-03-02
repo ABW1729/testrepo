@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { slideUp } from './animation';
 import { motion } from 'framer-motion';
-
+import Header from "../Header"
 export default function Home() {
   const videoRef = useRef(null);
  
@@ -45,6 +45,8 @@ export default function Home() {
   // }
 
   return (
+    <>
+    <Header/>
     <motion.main variants={slideUp} initial="initial" animate="enter">
      <video
         ref={videoRef}
@@ -76,5 +78,6 @@ export default function Home() {
         <p>Designer & Developer</p>
       </div> */}
       </motion.main>
+      </>
   )
 }

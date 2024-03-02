@@ -30,7 +30,7 @@ const FormSchema= z.object({
     img2:z.string().min(1, { message: 'required' }),
     img3:z.string().min(1, { message: 'required' }),
     participantcount:z.string().min(1, { message: 'required' }),
-    category:z.enum(["MA","IM","SE","CD","School","Gaming","AR"]),
+    category:z.enum(["MA","IM","SE","CD","School","Gaming","AR","Workshop"]),
     pdf:z.string().min(1, { message: 'required' }),
     desp:z.string().min(1, { message: 'required' }),
     date:z.string().min(1, { message: 'required' }),
@@ -239,6 +239,13 @@ const Regform = () => {
                       <RadioGroupItem value="AR" />
                     </FormControl>
                     <FormLabel className="font-normal">AR
+                    </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="Workshop" />
+                    </FormControl>
+                    <FormLabel className="font-normal">Workshop
                     </FormLabel>
                     </FormItem>
                 </RadioGroup>
