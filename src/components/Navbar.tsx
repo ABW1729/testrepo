@@ -25,10 +25,14 @@ return (
            </button>
      
 
-     
-             <button onClick={() => signOut(() =>router.push("/"))}>
-             Sign out
-           </button>
+           <button
+//  className="signOutButton"
+//  style={{ overflow: 'overlay' }} // Adjust the CSS property as needed
+ onClick={() => signOut(() => router.push("/"))}
+>
+ Sign out
+</button>
+
      
         
 

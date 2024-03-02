@@ -5,15 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function EditProfiles(props) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setlastName] = useState('');
-  const [number, setNumber] = useState('');
-  const [state, setState] = useState('');
-  const [address, setAddress] = useState('');
-  const [yearOfStudying, setYearOfStudying] = useState('');
+  const {email,user}=props;
+  const [firstName, setFirstName] = useState(user && user.firstName);
+  const [lastName, setlastName] = useState(user && user.lastName);
+  const [number, setNumber] = useState(user && user.phone);
+  const [state, setState] = useState(user && user.state);
+  const [address, setAddress] = useState(user && user.address);
+  const [yearOfStudying, setYearOfStudying] = useState(user && user.yearOfStudy);
   const [loading, setLoading] = useState(false);
-  const [city,setCity] = useState('');
-  const {email}=props;
+  const [city,setCity] = useState(user && user.city);
 
 
 
@@ -118,32 +118,32 @@ const handleSubmit = async (e:any) => {
         <ToastContainer />
         <div className="mb-4">
           <label htmlFor="name" className="block text-white">First Name</label>
-          <input type="text" id="name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="name"  placeholder={firstName}value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="email" className="block text-white">Last Name</label>
-          <input type="email" id="email" value={lastName} onChange={(e) => setlastName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="email" id="email" placeholder={lastName} value={lastName} onChange={(e) => setlastName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="number" className="block text-white">Phone Number:</label>
-          <input type="number" id="number" value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="number" id="number" placeholder={number} value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
     
         <div className="mb-4">
           <label htmlFor="collegeName" className="block text-white">State</label>
-          <input type="text" id="collegeName" value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="collegeName" placeholder={state} value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
       <div className="mb-4">
-          <label htmlFor="collegeName" className="block text-white">State</label>
-          <input type="text" id="collegeName" value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <label htmlFor="collegeName" className="block text-white">City</label>
+          <input type="text" id="collegeName" placeholder={city} value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="address" className="block text-white">Address:</label>
-          <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="address" placeholder={address} value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="yearOfStudying" className="block text-white">Year of Studying:</label>
-          <input type="text" id="yearOfStudying" value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="yearOfStudying" placeholder={yearOfStudying} value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
        
         <motion.button

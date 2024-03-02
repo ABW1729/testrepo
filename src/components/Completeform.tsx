@@ -5,16 +5,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function CompleteProfiles(props) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setlastName] = useState('');
-  const [number, setNumber] = useState('');
-  const [state, setState] = useState('');
-  const [address, setAddress] = useState('');
-  const [yearOfStudying, setYearOfStudying] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [city,setCity] = useState('');
+  const {email,user}=props;
 
-  const {email}=props;
+  const [firstName, setFirstName] = useState(user && user.firstName);
+  const [lastName, setlastName] = useState(user && user.lastName);
+  const [number, setNumber] = useState(user && user.phone);
+  const [state, setState] = useState(user && user.state);
+  const [address, setAddress] = useState(user && user.address);
+  const [yearOfStudying, setYearOfStudying] = useState(user && user.yearOfStudy);
+  const [loading, setLoading] = useState(false);
+  const [city,setCity] = useState(user && user.city);
+
+
 
 
 
@@ -47,7 +49,7 @@ const handleSubmit = async (e:any) => {
   e.preventDefault();
   setLoading(true);
    // values object
-   const hasChangedFields = Object.values(formData).some(value => value.trim() !== '');
+   const hasChangedFields = Object.values(formData).some(value => value.trim() !== ' ' && value !== null && value !== undefined);
 
    if (!hasChangedFields) {
      toast.error('Please fill out at least one field');
@@ -112,39 +114,39 @@ const handleSubmit = async (e:any) => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="text-2xl mt-2 text-white mb-8 font-semibold text-center"
         >
-          Profile Edit Form
+          Complete Profile
         </motion.h2>
 
         <ToastContainer />
-        <div className="mb-4">
+       {firstName=="" && <div className="mb-4">
           <label htmlFor="name" className="block text-white">First Name</label>
           <input type="text" id="name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-        <div className="mb-4">
+        </div>}
+       {lastName=="" && <div className="mb-4">
           <label htmlFor="email" className="block text-white">Last Name</label>
           <input type="email" id="email" value={lastName} onChange={(e) => setlastName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-        <div className="mb-4">
+        </div>}
+        {number=="" && <div className="mb-4">
           <label htmlFor="number" className="block text-white">Phone Number:</label>
           <input type="number" id="number" value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
+        </div>}
     
-        <div className="mb-4">
+        {state=="" &&<div className="mb-4">
           <label htmlFor="collegeName" className="block text-white">State</label>
           <input type="text" id="collegeName" value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="collegeName" className="block text-white">State</label>
+        </div>}
+        {city=="" && <div className="mb-4">
+          <label htmlFor="collegeName" className="block text-white">City</label>
           <input type="text" id="collegeName" value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-        <div className="mb-4">
+        </div>}
+        {address =="" && <div className="mb-4">
           <label htmlFor="address" className="block text-white">Address:</label>
           <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-        <div className="mb-4">
+        </div>}
+       {yearOfStudying=="" && <div className="mb-4">
           <label htmlFor="yearOfStudying" className="block text-white">Year of Studying:</label>
           <input type="text" id="yearOfStudying" value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
+        </div>}
        
         <motion.button
           whileHover={{ scale: 1.05 }}

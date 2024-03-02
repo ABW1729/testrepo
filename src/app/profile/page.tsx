@@ -15,6 +15,8 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import { useRouter } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
   const Header = ({user}:any) => (
    
@@ -28,7 +30,10 @@ import { useRouter } from 'next/navigation'
         <div className="container-fluid d-flex align-items-center">
           <div className="row">
             <div className="col-lg-7 col-md-10">
+              <br/>
+              <br/>
               <h1 className="display-2 text-white mb-0">Hello {  ( user && (user.fullName ? user.fullName : 'User'))}</h1>
+              <br/>
               <p className="text-white mt-0 mb-5">This is your profile page. You can complete your profile and see registered events.</p>
             </div>
           </div>
@@ -44,7 +49,11 @@ import { useRouter } from 'next/navigation'
     const  {user,check,email,events,loading,dbUser}=props;
     
     if (loading) {
-      return <div>Loading...</div>;
+      return (
+        <div className="loader-container">
+        <div className="loader"></div>
+      </div>
+      );
     }
 
     return (<div>
@@ -100,11 +109,11 @@ import { useRouter } from 'next/navigation'
                 <div className="col-8">
                   <h3 className="mb-0">My account</h3>
                 </div>
-                <div className="col-4 text-right">
-                 {email && (check==1 ?  <Editpbut email={email}/>: <CompleteProfile email={email}/>)}
+              </div>
+                <div className="col-md-4 col-sm-12 text-md-right text-center mt-3 mt-md-0">
+                 {email && (check==1 ?  <Editpbut email={email} user={dbUser}/>: <CompleteProfile email={email} user={dbUser}/>)}
                 
                 </div>
-              </div>
             </div>
             <div className="card-body">
               <form>
@@ -219,6 +228,14 @@ import { useRouter } from 'next/navigation'
       const [events, setEvents] = useState([]);
       const [loading, setLoading] = useState(true);
 
+      const isDataComplete = (obj) => {
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key) && (!obj[key] && obj[key] !== 0)) {
+            return false;
+          }
+        }
+        return true;
+      };
 
       useEffect(() => {
         const checkProfile = async () => {
@@ -233,6 +250,7 @@ import { useRouter } from 'next/navigation'
               const data = await res.json();
               const User = data.user;
               setDbUser(User);
+              setEvents(User.events);
               if (isDataComplete(User)) {
                 setCompleteProfile(1);
               } else {
@@ -249,52 +267,68 @@ import { useRouter } from 'next/navigation'
         checkProfile();
       }, []);
     
-      const isDataComplete = (obj) => {
-        for (const key in obj) {
-          if (obj.hasOwnProperty(key) && (!obj[key] && obj[key] !== 0)) {
-            return false;
-          }
-        }
-        return true;
-      };
-    
+      
       useEffect(() => {
-        const Email = user && user.emailAddresses[0]?.emailAddress;
-        const getEvents = async () => {
-          try {
-            if (Email) {
-              const res = await fetch("/api/getRegistrations", {
-                method: "GET",
-                headers: {
-                  'email': Email,
-                },
-              });
-    
-              if (res.status === 200) {
-                const data = await res.json();
-                setEvents(data.events);
-              } else {
-                setEvents([]);
-              }
-            }
-          } catch (error) {
-            console.log("Error ", error);
-          } finally {
-            setLoading(false);
+        const interval = setInterval(() => {
+          // Check if profile is complete, if not, show toast
+          if (completeProfile==2) {
+            toast.warning('Please complete your profile', {
+              position: 'top-right',
+              autoClose: 5000, // Close toast after 5 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           }
-        };
+        }, 100000); // Show toast every 5 seconds
     
-        if (Email) {
-          getEvents();
-        }
-      }, [user]);
+        return () => clearInterval(interval);
+      }, [completeProfile]);
     
+      // useEffect(() => {
+      //   const Email = user && user.emailAddresses[0]?.emailAddress;
+      //   const getEvents = async () => {
+      //     try {
+      //       if (Email) {
+      //         const res = await fetch("/api/getRegistrations", {
+      //           method: "GET",
+      //           headers: {
+      //             'email': Email,
+      //           },
+      //         });
+    
+      //         if (res.status === 200) {
+      //           const data = await res.json();
+      //           setEvents(data.events);
+      //         } else {
+      //           setEvents([]);
+      //         }
+      //       }
+      //     } catch (error) {
+      //       console.log("Error ", error);
+      //     } finally {
+      //       setLoading(false);
+      //     }
+      //   };
+    
+      //   if (Email) {
+      //     getEvents();
+      //   }
+      // }, [user]);
+
       if (loading) {
-        return <div>Loading...</div>;
+        return (
+          <div className="loader-container">
+          <div className="loader"></div>
+        </div>
+        );
       }
 
       return ( 
    <>
+   <ToastContainer/>
       <div>
         <div className="main-content">
          

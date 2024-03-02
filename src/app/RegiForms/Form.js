@@ -5,18 +5,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import { sendMail } from "../../service/mailservice";
 
 
-function Form({eventname,participantcount,category,id}) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
-  const [teamName, setTeamName] = useState('');
+function Form({eventname,participantcount,category,id,user}) {
+  const firstName = user && user.firstName ? user.firstName : "";
+  const lastName = user && user.lastName ? user.lastName : "";
+  const Name = firstName + " " + lastName;
+  const [name, setName] = useState(Name);
+  const [email, setEmail] = useState(user ? user.email : "");
+  const [number, setNumber] = useState(user ? user.phone : "");
+  const [teamName, setTeamName] = useState("");
   const [participants, setParticipants] = useState([]);
   const [collegeName, setCollegeName] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
+  const [state, setState] = useState(user ? user.state : "");
+  const [city, setCity] = useState(user ? user.city : "");
   const [linkedIn, setLinkedIn] = useState('');
-  const [address, setAddress] = useState('');
-  const [yearOfStudying, setYearOfStudying] = useState('');
+  const [address, setAddress] = useState(user ? user.address : "");
+  const [yearOfStudying, setYearOfStudying] = useState(user ? user.yearOfStudy : "");
   const [loading, setLoading] = useState(false);
 
 
@@ -30,8 +33,7 @@ function Form({eventname,participantcount,category,id}) {
         </div>
     );
 };
- console.log(id);
- console.log(participantcount);
+
 
 
 
@@ -63,7 +65,7 @@ function Form({eventname,participantcount,category,id}) {
              toast.error("User already Registered.");
           }
           else if(res.status===401){
-            toast.error("Please sign-up first");
+            toast.error("Please sign-in first");
           }
          else {
               toast.error('Registration failed.');
@@ -102,15 +104,8 @@ function Form({eventname,participantcount,category,id}) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-transparent">
-      <motion.h1
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-5xl text-white mb-4 font-semibold text-center"
-      >
-     {eventname}
-      </motion.h1>
-      <p className='text-white text-center mt-4 mb-4'>{category}</p>
+    
+      
       <motion.form
         onSubmit={handleSubmit}
         initial={{ opacity: 0, y: 50 }}
@@ -130,22 +125,22 @@ function Form({eventname,participantcount,category,id}) {
         <ToastContainer />
         {participantcount!=0 ? (     <div className="mb-4">
           <label htmlFor="name" className="block text-white">Team Leader Name:</label>
-          <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="name" placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>):   (<div className="mb-4">
           <label htmlFor="name" className="block text-white"> Name:</label>
-          <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="name" placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>)}
         <div className="mb-4">
           <label htmlFor="email" className="block text-white">Email:</label>
-          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="email" id="email" placeholder={email} value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="number" className="block text-white">Phone Number:</label>
-          <input type="number" id="number" value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="number" id="number"  placeholder={number} value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
        {participantcount!=0 && (<div className="mb-4">
           <label htmlFor="teamName" className="block text-white">Team Name:</label>
-          <input type="text" id="teamName" value={teamName} onChange={(e) => setTeamName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="teamName"  value={teamName} onChange={(e) => setTeamName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>) }
         <div className="mb-4">
           <label htmlFor="collegeName" className="block text-white">College Name:</label>
@@ -153,11 +148,11 @@ function Form({eventname,participantcount,category,id}) {
         </div>
         <div className="mb-4">
           <label htmlFor="state" className="block text-white">State:</label>
-          <input type="text" id="state" value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="state" placeholder={state} value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="city" className="block text-white">City:</label>
-          <input type="text" id="city" value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="city" placeholder={city} value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="linkedIn" className="block text-white">LinkedIn (Optional):</label>
@@ -165,11 +160,11 @@ function Form({eventname,participantcount,category,id}) {
         </div>
         <div className="mb-4">
           <label htmlFor="address" className="block text-white">Address:</label>
-          <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="address" placeholder={address} value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="yearOfStudying" className="block text-white">Year of Studying:</label>
-          <input type="text" id="yearOfStudying" value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="yearOfStudying"  placeholder={yearOfStudying} value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         {participantcount!=0 && (<>
           <div className="mb-4">

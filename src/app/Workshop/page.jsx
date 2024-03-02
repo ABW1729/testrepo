@@ -5,9 +5,9 @@ import WorkshopForm from "../RegiForms/WorkshopForm";
 import { useEffect} from 'react';
 import Header from "../../components/Header"
 
-const PostCard = ({ title, date, imageSrc, description }) => {
+const PostCard = ({ title, date, imageSrc, description,id }) => {
   const [showForm, setShowForm] = useState(false);
-
+  const [dbUser, setDbUser] = useState({});
   const openForm = () => {
     setShowForm(true);
     document.body.style.overflow = 'hidden'; // Disable scrolling on background
@@ -18,6 +18,26 @@ const PostCard = ({ title, date, imageSrc, description }) => {
     document.body.style.overflow = 'auto'; // Enable scrolling on background
   };
  
+  useEffect(() => {
+    const checkProfile = async () => {
+      try {
+        const res = await fetch("/api/getProfile", {
+          method: "GET",
+        });
+
+         if (res.status === 200) {
+          const data = await res.json();
+          const User = data.user;
+          setDbUser(User);
+         
+        }
+      } catch (error) {
+        console.log("Error ", error);
+      }
+    };
+
+    checkProfile();
+  }, []);
 
   return (
     <div className="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-lg relative">
@@ -43,7 +63,11 @@ const PostCard = ({ title, date, imageSrc, description }) => {
                 ></path>
               </svg>
             </button>
-            <WorkshopForm />
+            <WorkshopForm 
+            id={id}
+            title={title}
+            user={dbUser}
+             />
           </div>
         </div>
       )}
@@ -58,7 +82,7 @@ const PostCard = ({ title, date, imageSrc, description }) => {
           >
             {title}
           </a>
-          <span className="text-gray-600">— {date}</span>
+          <span className="text-gray-600"> {date}</span>
         </p>
         <p className="mb-1 text-gray-700 text-center">{description}</p>
         <div className="flex flex-row justify-between">
@@ -89,6 +113,7 @@ const PostCard = ({ title, date, imageSrc, description }) => {
 
 export default function Index() {
   const [events, setEvents] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -116,14 +141,26 @@ export default function Index() {
   }, []);
 
   const Events= events && events.events;
-  console.log(Events);
+      useEffect(() => {
+    if (Object.keys(events).length > 0) {
+      setLoading(false);
+    }
+  }, [ events]);
+
   return (
+    <>
+    {loading ? (
+      <div className="loader-container">
+      <div className="loader"></div>
+    </div>
+  ) : (
     <>
     <Header/>
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
       {Events && Events.map((event, index) => (
           <PostCard
+             id={event._id}
             key={index}
             title={event.evename}
             date={event.date}
@@ -133,6 +170,7 @@ export default function Index() {
         ))}
       </div>
     </div>
+    </>)}
     </>
   );
 }

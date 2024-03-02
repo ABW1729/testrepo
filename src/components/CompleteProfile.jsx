@@ -14,7 +14,9 @@ import CompleteProfiles from './Completeform';
 
 const CompleteProfile = (props) => {
   const CustomButton = ({ onClick, buttonText, form }) => (
-    <button onClick={() => onClick(form)} className="button-wrapper">
+    <button onClick={() => onClick(form)} className="button-wrapper"
+    style={{ display: 'inline-block', padding: 0, width: 'auto' }}
+    >
       <div className="back">
         <div className="button_base b03_skewed_slide_in rounded-md">
           <div>{buttonText}</div>
@@ -26,7 +28,7 @@ const CompleteProfile = (props) => {
   );
 const [showForm, setShowForm] = useState(false);
 const [selectedForm, setSelectedForm] = useState(null);
-const {email}=props;
+const {email,user}=props;
 const openForm = (form) => {
   setSelectedForm(form);
   setShowForm(true);
@@ -78,7 +80,7 @@ const renderForm = () => {
 
       <div className="flex flex-row justify-between">
 
-      <CustomButton onClick={openForm} buttonText="CompleteProfile" form={<CompleteProfiles email={email} />}/>
+      <CustomButton onClick={openForm} buttonText="COMPLETE PROFILE" form={<CompleteProfiles email={email}  user={user}/>}/>
    
  </div>
  </>

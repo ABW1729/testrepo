@@ -27,8 +27,7 @@ const Editpbut = (props) => {
 
 const [showForm, setShowForm] = useState(false);
 const [selectedForm, setSelectedForm] = useState(null);
-const {email}=props;
-console.log(email);
+const {email,user}=props;
 const openForm = (form) => {
   setSelectedForm(form);
   setShowForm(true);
@@ -81,7 +80,7 @@ const renderForm = () => {
 
       <div className="flex flex-row justify-between">
 
-      <CustomButton onClick={openForm} buttonText="Edit Profile" form={<EditProfiles email={email} />}/>
+      <CustomButton onClick={openForm} buttonText="EDIT" form={<EditProfiles email={email} user={user} />}/>
     </div>
  </div>
  </>
