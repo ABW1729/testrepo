@@ -75,12 +75,11 @@ const renderForm = () => {
         </div>
       )}
     </div>
-      <div className="grid mt-14 mb-10 p-4 ml-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20">
 
       <div className="flex flex-row justify-between">
 
-      <CustomButton onClick={openForm} buttonText="Complete Profile" form={<CompleteProfiles email={email} />}/>
-    </div>
+      <CustomButton onClick={openForm} buttonText="CompleteProfile" form={<CompleteProfiles email={email} />}/>
+   
  </div>
  </>
 

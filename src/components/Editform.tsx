@@ -12,7 +12,7 @@ function EditProfiles(props) {
   const [address, setAddress] = useState('');
   const [yearOfStudying, setYearOfStudying] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [city,setCity] = useState('');
   const {email}=props;
 
 
@@ -23,6 +23,7 @@ function EditProfiles(props) {
     lastName:lastName,
     number:number,
   state:state,
+   city:city,
    address:address,
    yearOfStudying:yearOfStudying
    
@@ -68,6 +69,8 @@ const handleSubmit = async (e:any) => {
     });
     if (response.ok) {
       toast.success('Form submitted successfully');
+      window.location.reload();
+
       // Optionally, perform any actions after successful submission
     } else {
       toast.error('Failed to submit form');
@@ -130,7 +133,10 @@ const handleSubmit = async (e:any) => {
           <label htmlFor="collegeName" className="block text-white">State</label>
           <input type="text" id="collegeName" value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
-   
+      <div className="mb-4">
+          <label htmlFor="collegeName" className="block text-white">State</label>
+          <input type="text" id="collegeName" value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+        </div>
         <div className="mb-4">
           <label htmlFor="address" className="block text-white">Address:</label>
           <input type="text" id="address" value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />

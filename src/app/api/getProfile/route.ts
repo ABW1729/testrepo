@@ -20,8 +20,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const user = userId ? await clerkClient.users.getUser(userId) : null;
 const email=user?.emailAddresses[0];
 const Email=email?.emailAddress;
-const fn=user?.firstName;
-const ln=user?.lastName;
+const fn=user?.firstName ?? "";
+const ln=user?.lastName ?? "";
 // console.log(user);
 const client=new MongoClient(process.env.MONGODB_URI ?? ' ' 
 );
@@ -31,8 +31,8 @@ const client=new MongoClient(process.env.MONGODB_URI ?? ' '
  const User = await db.collection('users').findOne({ email:Email });
 
  if (!User) {
-       await db.collection("users").insertOne({email:Email,firstName:fn,lastName:ln,phone:"", address:"", state:"", yearOfStudy:"" ,events:[]});
-       return NextResponse.json({status:201});
+       await db.collection("users").insertOne({email:Email,firstName:fn,lastName:ln,phone:"", address:"", state:"",city:"", yearOfStudy:"" ,events:[]});
+       return NextResponse.json({user:{email:Email,firstName:fn,lastName:ln,phone:"", address:"", state:"",city:"", yearOfStudy:"" ,events:[]}},{status:201});
 }
  
 return NextResponse.json({

@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb'
 
 export async function POST(req:Request) {
   try {
-    const { firstName, lastName, number, email, address, state, yearOfStudy}= await req.json();
+    const { firstName, lastName, number, email, address, state,city, yearOfStudy}= await req.json();
     // const newData = new Events(req.json());
    const client=new MongoClient(process.env.MONGODB_URI ?? '');
    await client.connect();
@@ -19,6 +19,7 @@ export async function POST(req:Request) {
       phone: number,
       address: address,
       state:state,
+      city:city,
       yearOfStudy: yearOfStudy
     }
   };

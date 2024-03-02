@@ -13,6 +13,9 @@ import './global.css'
 import { NextApiRequest } from 'next';
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import React, { useState, useEffect } from 'react';
+import Router from 'next/router';
+import { useRouter } from 'next/navigation'
+
   const Header = ({user}:any) => (
    
     <div>
@@ -25,7 +28,7 @@ import React, { useState, useEffect } from 'react';
         <div className="container-fluid d-flex align-items-center">
           <div className="row">
             <div className="col-lg-7 col-md-10">
-              <h1 className="display-2 text-white">Hello {user ?  user.fullName : "User"}</h1>
+              <h1 className="display-2 text-white mb-0">Hello {  ( user && (user.fullName ? user.fullName : 'User'))}</h1>
               <p className="text-white mt-0 mb-5">This is your profile page. You can complete your profile and see registered events.</p>
             </div>
           </div>
@@ -38,12 +41,12 @@ import React, { useState, useEffect } from 'react';
   const PageContent = (props:any) => {
 
 
-    const  {user,check,email,events,loading}=props;
+    const  {user,check,email,events,loading,dbUser}=props;
     
     if (loading) {
       return <div>Loading...</div>;
     }
-    
+
     return (<div>
       <div className="container-fluid mt--7">
       <div className="row">
@@ -73,7 +76,7 @@ import React, { useState, useEffect } from 'react';
               </div>
               <div className="text-center">
                 <h3>
-                 {user && user.fullName}<span className="font-weight-light"></span>
+                 {user && (user.fullName!="" ? user.fullName  :"User")}<span className="font-weight-light"></span>
                 </h3>
                 {/* <div className="h5 font-weight-300">
                   <i className="ni location_pin mr-2"></i>
@@ -125,14 +128,14 @@ import React, { useState, useEffect } from 'react';
                     <div className="col-lg-6">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-first-name">First name</label>
-                        <input type="text" id="input-first-name" className="form-control form-control-alternative" placeholder="First name"value={user && user.firstName ? user.firstName : ''}
+                        <input type="text" id="input-first-name" className="form-control form-control-alternative" placeholder="First name"value={ dbUser && (dbUser.firstName ? dbUser.firstName : '')}
 />
                       </div>
                     </div>
                     <div className="col-lg-6">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-last-name">Last name</label>
-                        <input type="text" id="input-last-name" className="form-control form-control-alternative" placeholder="Last name"value={user && user.lastName ? user.lastName : ''}
+                        <input type="text" id="input-last-name" className="form-control form-control-alternative" placeholder="Last name"value={dbUser && (dbUser.lastName ? dbUser.lastName : '')}
 />
                       </div>
                     </div>
@@ -146,7 +149,7 @@ import React, { useState, useEffect } from 'react';
                     <div className="col-md-12">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-address">Address</label>
-                        <input id="input-address" className="form-control form-control-alternative" placeholder=" Address" value="" type="text"/>
+                        <input id="input-address" className="form-control form-control-alternative" placeholder=" Address" value={dbUser && dbUser?.address} type="text"/>
                       </div>
                     </div>
                   </div>
@@ -154,19 +157,19 @@ import React, { useState, useEffect } from 'react';
                     <div className="col-lg-4">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-city">City</label>
-                        <input type="text" id="input-city" className="form-control form-control-alternative" placeholder="City" value=""/>
+                        <input type="text" id="input-city" className="form-control form-control-alternative" placeholder="City" value={dbUser && dbUser?.city}/>
                       </div>
                     </div>
                     <div className="col-lg-4">
                       <div className="form-group focused">
                         <label className="form-control-label" htmlFor="input-country">State</label>
-                        <input type="text" id="input-country" className="form-control form-control-alternative" placeholder="State" value=""/>
+                        <input type="text" id="input-country" className="form-control form-control-alternative" placeholder="State" value={dbUser && dbUser?.state}/>
                       </div>
                     </div>
                     <div className="col-lg-4">
                       <div className="form-group">
                         <label className="form-control-label" htmlFor="input-country">Year of study</label>
-                        <input type="number" id="input-postal-code" className="form-control form-control-alternative" placeholder="Year of Study"/>
+                        <input type="number" id="input-postal-code" className="form-control form-control-alternative" placeholder="Year of Study" value={dbUser && dbUser?.yos}/>
                       </div>
                     </div>
                   </div>
@@ -206,16 +209,47 @@ import React, { useState, useEffect } from 'react';
     // }
 
 
+
  export default function Profilepage(){
       // const [data, setData] = useState({});
       const sessionId = getCookie("__session");
- 
-      const user=useUser().user;
-  
-      interface MyObject {
-        [key: string]: any; 
-      }
-      const isDataComplete = <T extends Record<string, any>>(obj: T): boolean => {
+      const user = useUser().user;
+      const [completeProfile, setCompleteProfile] = useState(0);
+      const [dbUser, setDbUser] = useState({});
+      const [events, setEvents] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+
+      useEffect(() => {
+        const checkProfile = async () => {
+          try {
+            const res = await fetch("/api/getProfile", {
+              method: "GET",
+            });
+    
+            if (res.status === 201) {
+              setCompleteProfile(1);
+            } else if (res.status === 200) {
+              const data = await res.json();
+              const User = data.user;
+              setDbUser(User);
+              if (isDataComplete(User)) {
+                setCompleteProfile(1);
+              } else {
+                setCompleteProfile(2);
+              }
+            }
+          } catch (error) {
+            console.log("Error ", error);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        checkProfile();
+      }, []);
+    
+      const isDataComplete = (obj) => {
         for (const key in obj) {
           if (obj.hasOwnProperty(key) && (!obj[key] && obj[key] !== 0)) {
             return false;
@@ -223,51 +257,11 @@ import React, { useState, useEffect } from 'react';
         }
         return true;
       };
-      
-      const [completeProfile, isProfileComplete] = useState(0);
-      const [dbUser,setData]=useState({});
-     const [events,setEvents]=useState([]);
-     const [loading, setLoading] = useState(true)
-      useEffect(() => {
-        const checkProfile = async () => {
-          try {
-            const res = await fetch("/api/getProfile", {
-              method: "GET",
-            });
-      
-            if (res.status === 201) {
-              isProfileComplete(1);
-            } else if (res.status === 200) {
-              const data = await res.json(); 
-              const User = data.user;
-              setData(User);
-              if (isDataComplete(User)) {
-                isProfileComplete(1);
-              } else {
-                isProfileComplete(2);
-              }
-            }
-          } catch (error) {
-            console.log("Error ", error);
-           }finally {
-            setLoading(false); // Set loading to false when API call completes
-          }
-        };
-      
-        checkProfile(); 
-      }, []);
-  
-    const Email=user && user.emailAddresses[0].emailAddress;
-
     
-   if (!user && completeProfile!==0 && !Email) {
-        return <div>Loading...</div>;
-      }
-
       useEffect(() => {
+        const Email = user && user.emailAddresses[0]?.emailAddress;
         const getEvents = async () => {
           try {
-            // Only proceed if Email is available
             if (Email) {
               const res = await fetch("/api/getRegistrations", {
                 method: "GET",
@@ -275,7 +269,7 @@ import React, { useState, useEffect } from 'react';
                   'email': Email,
                 },
               });
-      
+    
               if (res.status === 200) {
                 const data = await res.json();
                 setEvents(data.events);
@@ -286,19 +280,20 @@ import React, { useState, useEffect } from 'react';
           } catch (error) {
             console.log("Error ", error);
           } finally {
-            setLoading(false); // Set loading to false when API call completes
+            setLoading(false);
           }
         };
-      
-        // Fetch events only if Email is available
+    
         if (Email) {
           getEvents();
         }
-      }, [Email])
-  
+      }, [user]);
     
+      if (loading) {
+        return <div>Loading...</div>;
+      }
 
-   return ( 
+      return ( 
    <>
       <div>
         <div className="main-content">
@@ -308,7 +303,7 @@ import React, { useState, useEffect } from 'react';
          
            <Navbar />
              <Header  user={user}/>
-         <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} events={events} loading={loading}/>
+         <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} events={events} loading={loading}  dbUser={dbUser}/>
         
         </div>
       </div>
