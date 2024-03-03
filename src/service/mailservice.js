@@ -22,7 +22,7 @@ export async function sendMail(subject, toEmail, otpText) {
     from: "admin@axisvnit.in",
     to:toEmail,
     subject:subject,
-    text: otpText,
+    html: otpText,
   
   };
 

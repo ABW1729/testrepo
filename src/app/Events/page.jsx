@@ -33,6 +33,10 @@ const GoogleDocButton = ({ googleDocLink }) => (
   </a>
 );
 
+
+
+
+
 const Home = () => {
   const [showForm, setShowForm] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
@@ -54,6 +58,8 @@ const Home = () => {
   const renderForm = () => {
    return  selectedForm;
 };
+
+
 
 
   const [events, setEvents] = useState({});
@@ -182,7 +188,7 @@ const AR=Events && Events.filter(event=>
         </div>
       ) : (
         <>
-          <Header />
+          <Header show={true} />
           <div className="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-lg relative">
             {showForm && (
               <div className="fixed top-0 left-0 pt-20 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-95 z-50 overflow-y-auto">

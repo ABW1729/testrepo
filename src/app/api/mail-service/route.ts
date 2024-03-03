@@ -4,7 +4,8 @@ import { NextResponse } from 'next/server';
 export async function POST(req:Request) {
   try {
     const {subject,email,text}=await req.json();
-
+ console.log(email)
+ console.log(text)
        await sendMail(
         subject,email,text
 

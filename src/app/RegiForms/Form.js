@@ -42,7 +42,7 @@ function Form({eventname,participantcount,category,id,user}) {
     e.preventDefault();
     const val={ name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying,eventname };
     const subject="AXIS VNIT";
-    const text="Congratulations"
+    const text="<h1>Hello!</h1><p>This is a test email with HTML content.</p>";
     const maildata={subject,email,text};
     try {   
       setLoading(true);
@@ -65,7 +65,7 @@ function Form({eventname,participantcount,category,id,user}) {
              toast.error("User already Registered.");
           }
           else if(res.status===401){
-            toast.error("Please sign-in first");
+            toast.error("Please sign-up first");
           }
          else {
               toast.error('Registration failed.');
@@ -125,34 +125,34 @@ function Form({eventname,participantcount,category,id,user}) {
         <ToastContainer />
         {participantcount!=0 ? (     <div className="mb-4">
           <label htmlFor="name" className="block text-white">Team Leader Name:</label>
-          <input type="text" id="name" placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="name"  required placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>):   (<div className="mb-4">
           <label htmlFor="name" className="block text-white"> Name:</label>
-          <input type="text" id="name" placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="name" required placeholder={Name} value={name} onChange={(e) => setName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>)}
         <div className="mb-4">
           <label htmlFor="email" className="block text-white">Email:</label>
-          <input type="email" id="email" placeholder={email} value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="email" id="email"  required placeholder={email} value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="number" className="block text-white">Phone Number:</label>
-          <input type="number" id="number"  placeholder={number} value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="number" id="number" required placeholder={number} value={number} onChange={(e) => setNumber(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
        {participantcount!=0 && (<div className="mb-4">
           <label htmlFor="teamName" className="block text-white">Team Name:</label>
-          <input type="text" id="teamName"  value={teamName} onChange={(e) => setTeamName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="teamName" required value={teamName} onChange={(e) => setTeamName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>) }
         <div className="mb-4">
           <label htmlFor="collegeName" className="block text-white">College Name:</label>
-          <input type="text" id="collegeName" value={collegeName} onChange={(e) => setCollegeName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="collegeName" required value={collegeName} onChange={(e) => setCollegeName(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="state" className="block text-white">State:</label>
-          <input type="text" id="state" placeholder={state} value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="state"  requiredplaceholder={state} value={state} onChange={(e) => setState(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="city" className="block text-white">City:</label>
-          <input type="text" id="city" placeholder={city} value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="city"  required placeholder={city} value={city} onChange={(e) => setCity(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="linkedIn" className="block text-white">LinkedIn (Optional):</label>
@@ -160,11 +160,11 @@ function Form({eventname,participantcount,category,id,user}) {
         </div>
         <div className="mb-4">
           <label htmlFor="address" className="block text-white">Address:</label>
-          <input type="text" id="address" placeholder={address} value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="address"  required placeholder={address} value={address} onChange={(e) => setAddress(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         <div className="mb-4">
           <label htmlFor="yearOfStudying" className="block text-white">Year of Studying:</label>
-          <input type="text" id="yearOfStudying"  placeholder={yearOfStudying} value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+          <input type="text" id="yearOfStudying" required  placeholder={yearOfStudying} value={yearOfStudying} onChange={(e) => setYearOfStudying(e.target.value)} className="mt-1 px-2 py-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
         {participantcount!=0 && (<>
           <div className="mb-4">
@@ -175,6 +175,7 @@ function Form({eventname,participantcount,category,id,user}) {
             <label htmlFor={`participant-${index}`} className="block text-white">Participant {index + 1}:</label>
             <div className="flex items-center">
               <input
+              required
                 type="text"
                 id={`participant-${index}`}
                 value={participant}

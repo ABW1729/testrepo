@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useUser } from "@clerk/nextjs";
+import Header from "../../components/Header"
 import redirect from "next/navigation";
 import styles from './profilepage.module.css';
 import Navbar from "../../components/Navbar"
@@ -18,7 +19,7 @@ import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-  const Header = ({user}:any) => (
+  const Leader = ({user}:any) => (
    
     <div>
       {/*<!-- Header -->*/}
@@ -32,11 +33,14 @@ import 'react-toastify/dist/ReactToastify.css';
             <div className="col-lg-7 col-md-10">
               <br/>
               <br/>
-              <h1 className="display-2 text-white mb-0">Hello {  ( user && (user.fullName ? user.fullName : 'User'))}</h1>
+              <h1 className="display-2 text-white ">Hello {  ( user && (user.fullName ? user.fullName : 'User'))}</h1>
               <br/>
-              <p className="text-white mt-0 mb-5">This is your profile page. You can complete your profile and see registered events.</p>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
             </div>
-          </div>
+ </div>
         </div>
       </div>
     </div>
@@ -193,7 +197,7 @@ import 'react-toastify/dist/ReactToastify.css';
         {events && events.length > 0 ? (
             <ul>
                 {events.map((event: string, index: number) => (
-                    <li key={index}>{event}</li>
+                    <li className="event" key={index}>{event}</li>
                 ))}
             </ul>
         ) : (
@@ -329,14 +333,15 @@ import 'react-toastify/dist/ReactToastify.css';
       return ( 
    <>
    <ToastContainer/>
+   <Header show={false}/>
       <div>
         <div className="main-content">
          
   
          
-         
-           <Navbar />
-             <Header  user={user}/>
+     
+           {/* <Navbar /> */}
+             <Leader  user={user}/>
          <PageContent user={user} check={completeProfile} email={user && user?.emailAddresses[0].emailAddress} events={events} loading={loading}  dbUser={dbUser}/>
         
         </div>

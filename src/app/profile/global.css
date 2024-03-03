@@ -2095,5 +2095,15 @@ p {
   margin-bottom: 20px;
 }
 
+.event{
+  display: block; /* Display as block-level elements */
+  margin-bottom: 8px; /* Add margin to separate them */
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: default; 
+}
+
 
 

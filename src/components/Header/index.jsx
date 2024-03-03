@@ -16,7 +16,7 @@ import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from 'next/navigation'
 import { redirect } from 'next/navigation';
 
-export default function index() {
+export default function index({show}) {
   // const header = useRef(null);
   const { signOut } = useClerk();
   const router = useRouter()
@@ -25,6 +25,7 @@ export default function index() {
   const button = useRef(null);
   const user=useUser();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
+
   useEffect(() => {
     if (isActive) setIsActive(false);
   }, [pathname]);
@@ -149,67 +150,106 @@ export default function index() {
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-4">
              
-                <div className="hidden sm:flex">
-                  {userId ?
-                  (<><Magnetic>
-                    <a
-                      className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
-                      href="/profile"
-                    >
-                      <span className="absolute -end-full transition-all group-hover:end-4">
-                        <svg
-                          className="h-5 w-5 rtl:rotate-180"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </span>
+              <div className="hidden sm:flex">
+    {userId ? (
+       !show ? (
+        <button onClick={() => signOut(() => router.push('/'))}>
+          Sign out
+        </button>
+      ) : (
+        <>
+        <Magnetic>
+        <a
+          className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
+          href="/profile"
+        >
+          <span className="absolute -end-full transition-all group-hover:end-4">
+            <svg
+              className="h-5 w-5 rtl:rotate-180"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </span>
 
-                      <span className="text-sm font-semibold transition-all group-hover:me-4">
-                        {" "}
-                        Dashboard{" "}
-                         </span>
-                    </a>
-                  </Magnetic>
-                  <button onClick={() => signOut(() =>router.push("/"))}>
-             Sign out
-           </button></>) : (<Magnetic>
-                    <a
-                      className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
-                      href="/sign-in"
-                    >
-                      <span className="absolute -end-full transition-all group-hover:end-4">
-                        <svg
-                          className="h-5 w-5 rtl:rotate-180"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </span>
+          <span className="text-sm font-semibold transition-all group-hover:me-4">
+            Dashboard
+          </span>
+        </a>
+      </Magnetic>
+        <button onClick={() => signOut(() => router.push('/'))}>
+          Sign out
+        </button>
+        </>
+      )
+    ) : (
+      <>
+        <Magnetic>
+          <a
+            className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
+            href="/sign-in"
+          >
+            <span className="absolute -end-full transition-all group-hover:end-4">
+              <svg
+                className="h-5 w-5 rtl:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </span>
 
-                      <span className="text-sm font-semibold transition-all group-hover:me-4">
-                        {" "}
-                        Login{" "}
-                         </span>
-                    </a>
-                  </Magnetic>)}
-                </div>
+            <span className="text-sm font-semibold transition-all group-hover:me-4">
+              Login
+            </span>
+          </a>
+        </Magnetic>
+
+        <Magnetic>
+          <a
+            className="group relative border-4 rounded-full inline-flex items-center overflow-hidden bg-white px-8 py-3 text-black focus:outline-none focus:ring active:bg-indigo-500"
+            href="/sign-up"
+          >
+            <span className="absolute -end-full transition-all group-hover:end-4">
+              <svg
+                className="h-5 w-5 rtl:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </span>
+
+            <span className="text-sm font-semibold transition-all group-hover:me-4">
+              Sign-up
+            </span>
+          </a>
+        </Magnetic>
+      </>
+    )}
+  </div>
             
               </div>
 
