@@ -8,8 +8,8 @@ export async function sendMail(subject, toEmail, otpText) {
     secure:false,
     secureConnection:false,
     auth: {
-      user: "aniketwani1729@gmail.com",
-      pass: "dzmyodoqwnzdmjzj",
+      user: "admin@axisvnit.in",
+      pass: "pjcxxvafqesqthjw",
     },
     tls:{
         rejectUnauthorized:false,
@@ -19,7 +19,7 @@ export async function sendMail(subject, toEmail, otpText) {
 
   var mailOptions = {
   
-    from: "aniketwani1729@gmail.com",
+    from: "admin@axisvnit.in",
     to:toEmail,
     subject:subject,
     text: otpText,

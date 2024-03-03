@@ -42,7 +42,7 @@ function Form({eventname,participantcount,category,id,user}) {
     e.preventDefault();
     const val={ name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying,eventname };
     const subject="AXIS VNIT";
-    const text="Congo Nigga"
+    const text="Congratulations"
     const maildata={subject,email,text};
     try {   
       setLoading(true);

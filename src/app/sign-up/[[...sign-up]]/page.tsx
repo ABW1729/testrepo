@@ -1,8 +1,8 @@
 "use client"
 
-import { SignUp } from "@clerk/nextjs";
+import { SignUp,ClerkLoaded } from "@clerk/nextjs";
 import React, { useState }  from 'react'
-import '../../sign-in/[[...sign-in]]/global.css';
+import '../../sign-up/[[...sign-up]]/global.css';
 import styled from 'styled-components';
 import { dark } from "@clerk/themes";
 
@@ -24,9 +24,13 @@ export default function Page() {
 
 <div className="content"> 
     <div className="flex justify-center py-24">
+    <ClerkLoaded>
     <StyledDiv>
-<SignUp  appearance={ dark }/>
+   
+<SignUp appearance={dark}/>
+
 </StyledDiv>
+</ClerkLoaded>
 
 
 

@@ -41,7 +41,7 @@ function WorkshopForm({title,user,id}) {
     e.preventDefault();
     const val={ name, email,number, teamName, participants, collegeName, state, city, linkedIn, address, yearOfStudying,eventname };
     const subject="AXIS VNIT";
-    const text="Congo Nigga"
+    const text="Congratulations"
     const maildata={subject,email,text};
     try {   
       setLoading(true);
@@ -88,17 +88,7 @@ function WorkshopForm({title,user,id}) {
     }
   };
 
-  const handleDeleteParticipant = (index) => {
-    const updatedParticipants = [...participants];
-    updatedParticipants.splice(index, 1);
-    setParticipants(updatedParticipants);
-  };
 
-  const handleParticipantChange = (index, value) => {
-    const updatedParticipants = [...participants];
-    updatedParticipants[index] = value;
-    setParticipants(updatedParticipants);
-  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-transparent">
