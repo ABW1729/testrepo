@@ -14,7 +14,7 @@ import EditProfiles from './Editform';
 
 const Editpbut = (props) => {
   const CustomButton = ({ onClick, buttonText, form }) => (
-    <button onClick={() => onClick(form)} className="button-wrapper">
+    <button    style={{ display: 'inline-block', padding: 0, width: 'auto' }} onClick={() => onClick(form)} className="button-wrapper">
       <div className="back">
         <div className="button_base b03_skewed_slide_in rounded-md">
           <div>{buttonText}</div>
@@ -76,12 +76,11 @@ const renderForm = () => {
         </div>
       )}
     </div>
-      <div className="grid mt-14 mb-10 p-4 ml-10 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20">
 
       <div className="flex flex-row justify-between">
 
       <CustomButton onClick={openForm} buttonText="EDIT" form={<EditProfiles email={email} user={user} />}/>
-    </div>
+  
  </div>
  </>
 

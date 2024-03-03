@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <>
-    <Header/>
+    <Header  show={true}/>
     <motion.main variants={slideUp} initial="initial" animate="enter">
      <video
         ref={videoRef}
